@@ -45,7 +45,7 @@ In other words, Graph has received and accepted our request to send an email. If
 
 The [400 status code](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.1) means "The request could not be understood by the server due to malformed syntax." Note that a JSON error message is also returned, which describes the problem:
 
-```json
+```javascript
 {'error': {'code': 'ErrorInvalidRecipients',
            'innerError': {'date': '2017-12-01T02:58:24',
                           'request-id': 'd0addb2f-8366-47f7-8f3e-fa8616cd279f'},
