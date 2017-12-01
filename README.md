@@ -1,5 +1,7 @@
 # Sending mail via Microsoft Graph from Python
 
+![language:Python](https://img.shields.io/badge/Language-Python-blue.svg?style=flat-square) ![license:MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square) 
+
 Microsoft Graph provides [REST APIs for working with Outlook mail data](https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/resources/mail_api_overview) that give your app the ability to perform user-centric actions such as sending and receiving email. This sample provides an example of how to send email from a Python web application, using the [Requests](http://docs.python-requests.org/en/master/) HTTP library to POST to Graph's [Send mail](https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/user_sendmail) API. (For an example of how to _read_ mail messages, see the [Python pagination sample](https://github.com/microsoftgraph/python-sample-pagination)).
 
 * [Installation](#installation)
@@ -121,8 +123,16 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 ## Resources
 
+Documentation:
 * [Use the Microsoft Graph API to integrate with Outlook mail](https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/resources/mail_api_overview)
 * Microsoft Graph [Send mail](https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/user_sendmail) documentation
 * [Microsoft Graph permissions reference](https://developer.microsoft.com/en-us/graph/docs/concepts/permissions_reference)
+
+Samples:
 * [Python authentication samples for Microsoft Graph](https://github.com/microsoftgraph/python-sample-auth)
+* [Working with paginated Microsoft Graph responses in Python](https://github.com/microsoftgraph/python-sample-pagination)
+* [Sending mail via Microsoft Graph from Python](https://github.com/microsoftgraph/python-sample-send-mail)
+
+Packages:
+* [Flask-OAuthlib](https://flask-oauthlib.readthedocs.io/en/latest/)
 * [Requests: HTTP for Humans](http://docs.python-requests.org/en/master/)
