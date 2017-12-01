@@ -18,7 +18,7 @@ SCOPES = ['User.Read'] # Add other scopes/permissions as needed.
 
 
 # This code can be removed after configuring CLIENT_ID and CLIENT_SECRET above.
-if ' ' in CLIENT_ID or ' ' in CLIENT_SECRET:
+if 'ENTER_YOUR' in CLIENT_ID or 'ENTER_YOUR' in CLIENT_SECRET:
     print('ERROR: config.py does not contain valid CLIENT_ID and CLIENT_SECRET')
     import sys
     sys.exit(1)
