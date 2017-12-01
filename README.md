@@ -58,7 +58,7 @@ This sample uses _delegated permissions_ to send mail on behalf of the currently
 
 ## Sendmail helper function
 
-The ```sendmail()``` function in ```sample.py``` is a helper to make it easy to send email from Python applications and services via Microsoft Graph. As an example of how it's used, here's the line of code that sends mail in ```sample.py```:
+The ```sendmail()``` function in ```sample.py``` is a helper to make it easy to send email from Python applications and services via Microsoft Graph. For example, here's the line of code that sends mail in ```sample.py```, passing the values from the send mail form to the helper function:
 
 ```python
 response = sendmail(MSGRAPH,
@@ -67,7 +67,7 @@ response = sendmail(MSGRAPH,
                     html=flask.request.args['body'])
 ```
 
-And here's the complete source code for ```sendmail()```:
+The helper function creates dictionaries for the recipients and any attachments, then assembles those into the JSON data that is sent to Graph. Here's the complete source code for ```sendmail()```:
 
 ```python
 def sendmail(client, subject=None, recipients=None, html=None, attachments=None):
@@ -86,6 +86,10 @@ def sendmail(client, subject=None, recipients=None, html=None, attachments=None)
     if not all([client, subject, recipients, html]):
         raise ValueError('sendmail(): required arguments missing')
 
+    # Create recipient list in required format.
+    recipient_list = [{'EmailAddress': {'Address': address}}
+                      for address in recipients]
+
     # Create list of attachments in required format.
     attached_files = []
     if attachments:
@@ -96,10 +100,6 @@ def sendmail(client, subject=None, recipients=None, html=None, attachments=None)
                  'ContentBytes': b64_content.decode('utf-8'),
                  'ContentType': 'image/png',
                  'Name': filename})
-
-    # Create recipient list in required format.
-    recipient_list = [{'EmailAddress': {'Address': address}}
-                      for address in recipients]
 
 	# Create email message in required format.
     email_msg = {'Message': {'Subject': subject,
