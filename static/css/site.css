@@ -1,0 +1,28 @@
+.mailform-table {
+    margin: 0 0 0 0;
+    width: 100%;
+    display: table;
+    font-size: 14px;
+    border: 6px solid #f0f0f0;
+}
+  
+  .mailform-table th {
+    background-color: #f0f0f0;
+    text-align: right;
+    vertical-align: top;
+    padding: 11px 9px 6px 6px;
+    width: 120px;
+}
+  
+  .mailform-table td {
+    font-family: Consolas,Monaco,Lucida Console,Courier New, monospace;
+    vertical-align: top;
+    background-color: #f0f0f0;
+    padding: 6px 12px 6px 0;
+}
+
+.form-inputs {
+    width: 100%;
+    padding: 4px;
+    border: .5px solid #cccccc;
+}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<!-- Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license.
+See LICENSE in the source repository root for complete license information. -->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{ sample }} sample</title>
+        <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="/static/css/site.css?version=1.21" />
+    </head>
+    <body>
+        <div class="container homepage-container">
+            <div>
+                <h1>Mail Sent</h1>
+                <form action="/send_mail">
+                    <table class="mailform-table">
+                        <tr>
+                            <th>From:</th>
+                            <td><input name="sender" class="form-inputs" value="{{ sender }}" readonly></td>
+                        </tr>
+                        <tr>
+                            <th>To:</th>
+                            <td><input name="email" class="form-inputs" value="{{ email }}" readonly></td>
+                        </tr>
+                        <tr>
+                            <th>Subject:</th>
+                            <td><input name="subject" class="form-inputs" value="{{ subject }}" readonly></td>
+                        </tr>
+                        <tr>
+                            <th>Body:</th>
+                            <td><textarea class="form-inputs" name="body" cols="80" rows="5" readonly>{{ body }}</textarea></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-md" onclick="window.location.href='/mailform'">Send Another</button>&nbsp;<button type="button" class="btn btn-primary btn-md" onclick="window.location.href='/'">Re-Authenticate</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <pre style="background-color:{% if 200 <= response_status <= 299 %}#d0ffd0{% else %}#ffd0d0{% endif %}">&lt;Response [{{ response_status }}]&gt;</pre>{% if response_json %}<pre style="background-color:#ffd0d0">{{ response_json }}</pre>{% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

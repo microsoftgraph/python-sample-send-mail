@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<!-- Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license.
+See LICENSE in the source repository root for complete license information. -->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{ sample }} sample</title>
+        <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="/static/css/site.css?version=1.19" />
+    </head>
+    <body>
+        <div class="container homepage-container">
+            <div>
+                <h1>Send Mail</h1>
+                <form action="/send_mail">
+                    <table class="mailform-table">
+                        <tr>
+                            <th>From:</th>
+                            <td><input name="sender" class="form-inputs" value="{{ name }} <{{ email }}>" readonly></td>
+                        </tr>
+                        <tr>
+                            <th>To:</th>
+                            <td><input name="email" class="form-inputs" value="{{ email }}" autofocus></td>
+                        </tr>
+                        <tr>
+                            <th>Subject:</th>
+                            <td><input name="subject" class="form-inputs" value="email from Microsoft Graph"></td>
+                        </tr>
+                        <tr>
+                            <th>Body:</th>
+                            <td><textarea class="form-inputs" name="body" cols="80" rows="5">This email was sent from a Python/Flask web app via <strong>Microsoft Graph</strong>.</textarea></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><input type="submit" value="Send Message" class="btn btn-primary btn-md"></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
