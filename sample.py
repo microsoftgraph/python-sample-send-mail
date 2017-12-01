@@ -100,6 +100,10 @@ def sendmail(client, subject=None, recipients=None, html=None, attachments=None)
     if not all([client, subject, recipients, html]):
         raise ValueError('sendmail(): required arguments missing')
 
+    # Create recipient list in required format.
+    recipient_list = [{'EmailAddress': {'Address': address}}
+                      for address in recipients]
+
     # Create list of attachments in required format.
     attached_files = []
     if attachments:
@@ -110,10 +114,6 @@ def sendmail(client, subject=None, recipients=None, html=None, attachments=None)
                  'ContentBytes': b64_content.decode('utf-8'),
                  'ContentType': 'image/png',
                  'Name': filename})
-
-    # Create recipient list in required format.
-    recipient_list = [{'EmailAddress': {'Address': address}}
-                      for address in recipients]
 
 	# Create email message in required format.
     email_msg = {'Message': {'Subject': subject,
