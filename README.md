@@ -130,8 +130,9 @@ Documentation:
 
 Samples:
 * [Python authentication samples for Microsoft Graph](https://github.com/microsoftgraph/python-sample-auth)
-* [Working with paginated Microsoft Graph responses in Python](https://github.com/microsoftgraph/python-sample-pagination)
 * [Sending mail via Microsoft Graph from Python](https://github.com/microsoftgraph/python-sample-send-mail)
+* [Working with paginated Microsoft Graph responses in Python](https://github.com/microsoftgraph/python-sample-pagination)
+* [Working with Graph open extensions in Python](https://github.com/microsoftgraph/python-sample-open-extensions)
 
 Packages:
 * [Flask-OAuthlib](https://flask-oauthlib.readthedocs.io/en/latest/)
