@@ -115,7 +115,7 @@ def sendmail(client, subject=None, recipients=None, html=None, attachments=None)
                  'ContentType': 'image/png',
                  'Name': filename})
 
-	# Create email message in required format.
+    # Create email message in required format.
     email_msg = {'Message': {'Subject': subject,
                              'Body': {'ContentType': 'HTML', 'Content': html},
                              'ToRecipients': recipient_list},
