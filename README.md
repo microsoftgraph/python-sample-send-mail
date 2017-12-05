@@ -4,13 +4,13 @@
 
 Microsoft Graph provides [REST APIs for working with Outlook mail data](https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/resources/mail_api_overview) that give your app the ability to perform user-centric actions such as sending and receiving email. This sample provides an example of how to send email from a Python web application, using the [Requests](http://docs.python-requests.org/en/master/) HTTP library to POST to Graph's [Send mail](https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/user_sendmail) API. (For an example of how to _read_ mail messages, see the [Python pagination sample](https://github.com/microsoftgraph/python-sample-pagination)).
 
+The goal of this sample is to demonstrate the basic concepts for sending email from a Python/Flask web application via Graph. For clarity and simplicity, the sample doesn't implement the level of error handling typically found in production code.
+
 * [Installation](#installation)
 * [Running the sample](#running-the-sample)
 * [Sendmail helper function](#sendmail-helper-function)
 * [Contributing](#contributing)
 * [Resources](#resources)
-
-The goal of this sample is to demonstrate the basic concepts for sending email from a Python/Flask web application via Graph. For clarity and simplicity, the sample doesn't implement the level of error handling typically found in production code.
 
 ## Installation
 
@@ -130,7 +130,8 @@ Documentation:
 
 Samples:
 * [Python authentication samples for Microsoft Graph](https://github.com/microsoftgraph/python-sample-auth)
-* [Sending mail via Microsoft Graph from Python](https://github.com/microsoftgraph/python-sample-send-mail)
+* [Sending mail via Microsoft Graph from Python](https://github.com/microsoftgraph/python-sample-send-mail) (for more information about this sample, see [Get started with Microsoft Graph in a Python app](https://developer.microsoft.com/en-us/graph/docs/concepts/python
+))
 * [Working with paginated Microsoft Graph responses in Python](https://github.com/microsoftgraph/python-sample-pagination)
 * [Working with Graph open extensions in Python](https://github.com/microsoftgraph/python-sample-open-extensions)
 
