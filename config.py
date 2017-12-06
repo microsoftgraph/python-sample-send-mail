@@ -14,7 +14,7 @@ TOKEN_ENDPOINT = '/oauth2/v2.0/token'
 
 RESOURCE = 'https://graph.microsoft.com/'
 API_VERSION = 'v1.0'
-SCOPES = ['User.Read', 'Mail.Read']
+SCOPES = ['User.Read', 'Mail.Send']
 
 # This code can be removed after configuring CLIENT_ID and CLIENT_SECRET above.
 if 'ENTER_YOUR' in CLIENT_ID or 'ENTER_YOUR' in CLIENT_SECRET:
