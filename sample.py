@@ -2,6 +2,7 @@
 # Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license.
 # See LICENSE in the project root for license information.
 import base64
+import json
 import pprint
 import uuid
 
@@ -118,9 +119,9 @@ def sendmail(client, subject=None, recipients=None, html=None, attachments=None)
     # Create email message in required format.
     email_msg = {'Message': {'Subject': subject,
                              'Body': {'ContentType': 'HTML', 'Content': html},
-                             'ToRecipients': recipient_list},
-                 'SaveToSentItems': 'true',
-                 'Attachments': attached_files}
+                             'ToRecipients': recipient_list,
+                             'Attachments': attached_files},
+                 'SaveToSentItems': 'true'}
 
     # Do a POST to Graph's sendMail API and return the response.
     return client.post('me/microsoft.graph.sendMail',
