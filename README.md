@@ -64,29 +64,32 @@ This sample uses _delegated permissions_ to send mail on behalf of the currently
 The ```sendmail()``` function in ```sample.py``` is a helper to make it easy to send email from Python applications and services via Microsoft Graph. For example, here's the line of code that sends mail in ```sample.py```, passing the values from the send mail form to the helper function:
 
 ```python
-response = sendmail(MSGRAPH,
+response = sendmail(client=MSGRAPH,
                     subject=flask.request.args['subject'],
                     recipients=flask.request.args['email'].split(';'),
-                    html=flask.request.args['body'])
+                    body=flask.request.args['body'],
+                    attachments=[profile_pic])
 ```
 
 The helper function creates dictionaries for the recipients and any attachments, then assembles those into the JSON data that is sent to Graph. Here's the complete source code for ```sendmail()```:
 
 ```python
-def sendmail(client, subject=None, recipients=None, html=None, attachments=None):
+def sendmail(*, client, subject=None, recipients=None, body='',
+             content_type='HTML', attachments=None):
     """Helper to send email from current user.
 
-    client      = user-authenticated flask-oauthlib client instance
-    subject     = email subject (required)
-    recipients  = list of recipient email addresses (required)
-    html        = html body of the message (required)
-    attachments = list of file attachments (local filenames)
+    client       = user-authenticated flask-oauthlib client instance
+    subject      = email subject (required)
+    recipients   = list of recipient email addresses (required)
+    body         = body of the message
+    content_type = content type (default is 'HTML')
+    attachments  = list of file attachments (local filenames)
 
     Returns the response from the POST to the sendmail API.
     """
 
     # Verify that required arguments have been passed.
-    if not all([client, subject, recipients, html]):
+    if not all([client, subject, recipients]):
         raise ValueError('sendmail(): required arguments missing')
 
     # Create recipient list in required format.
@@ -98,18 +101,20 @@ def sendmail(client, subject=None, recipients=None, html=None, attachments=None)
     if attachments:
         for filename in attachments:
             b64_content = base64.b64encode(open(filename, 'rb').read())
+            mime_type = mimetypes.guess_type(filename)[0]
+            mime_type = mime_type if mime_type else ''
             attached_files.append( \
                 {'@odata.type': '#microsoft.graph.fileAttachment',
                  'ContentBytes': b64_content.decode('utf-8'),
-                 'ContentType': 'image/png',
+                 'ContentType': mime_type,
                  'Name': filename})
 
-	# Create email message in required format.
+    # Create email message in required format.
     email_msg = {'Message': {'Subject': subject,
-                             'Body': {'ContentType': 'HTML', 'Content': html},
-                             'ToRecipients': recipient_list},
-                 'SaveToSentItems': 'true',
-                 'Attachments': attached_files}
+                             'Body': {'ContentType': content_type, 'Content': body},
+                             'ToRecipients': recipient_list,
+                             'Attachments': attached_files},
+                 'SaveToSentItems': 'true'}
 
     # Do a POST to Graph's sendMail API and return the response.
     return client.post('me/microsoft.graph.sendMail',
