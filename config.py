@@ -13,7 +13,7 @@ AUTH_ENDPOINT = '/oauth2/v2.0/authorize'
 TOKEN_ENDPOINT = '/oauth2/v2.0/token'
 
 RESOURCE = 'https://graph.microsoft.com/'
-API_VERSION = 'v1.0'
+API_VERSION = 'beta' # need beta API to get profile photo for Microsoft Accounts
 SCOPES = ['User.Read', 'Mail.Send', 'Files.ReadWrite']
 
 # This code can be removed after configuring CLIENT_ID and CLIENT_SECRET above.
