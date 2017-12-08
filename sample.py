@@ -2,6 +2,7 @@
 # Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license.
 # See LICENSE in the project root for license information.
 import base64
+import mimetypes
 import pprint
 import uuid
 
@@ -49,19 +50,30 @@ def authorized():
 def mailform():
     """Sample form for sending email via Microsoft Graph."""
     user_profile = MSGRAPH.get('me', headers=request_headers()).data
+    user_name = user_profile['displayName']
+    body = flask.render_template('email.html', name=user_name)
     return flask.render_template('mailform.html',
-                                 name=user_profile['displayName'],
-                                 email=user_profile['userPrincipalName'])
+                                 name=user_name,
+                                 email=user_profile['userPrincipalName'],
+                                 body=body)
 
 @APP.route('/send_mail')
 def send_mail():
     """Handler for send_mail route."""
 
-    response = sendmail(MSGRAPH,
+    # get profile photo
+    _, _, profile_pic = profile_photo(client=MSGRAPH, save_as='me')
+    if not profile_pic:
+        profile_pic = 'static/images/no-profile-photo.png'
+
+    # send the email
+    response = sendmail(client=MSGRAPH,
                         subject=flask.request.args['subject'],
                         recipients=flask.request.args['email'].split(';'),
-                        html=flask.request.args['body'])
+                        body=flask.request.args['body'],
+                        attachments=[profile_pic])
 
+    # show results in the mailsent form
     response_json = pprint.pformat(response.data)
     response_json = None if response_json == "b''" else response_json
     return flask.render_template('mailsent.html',
@@ -84,20 +96,53 @@ def request_headers():
             'client-request-id': str(uuid.uuid4()),
             'return-client-request-id': 'true'}
 
-def sendmail(client, subject=None, recipients=None, html=None, attachments=None):
+def profile_photo(*, client=None, user_id='me', save_as=None):
+    """Get profile photo.
+
+    client  = user-authenticated flask-oauthlib client instance
+    user_id = Graph id value for the user, or 'me' (default) for current user
+    save_as = optional filename to save the photo locally. Should not include an
+              extension - the extension is determined by photo's content type.
+
+    Returns a tuple of the photo (raw data), content type, saved filename.
+    """
+    endpoint = 'me/photo/$value' if user_id == 'me' else f'users/{user_id}/$value'
+    photo_response = client.get(endpoint)
+    if str(photo_response.status).startswith('2'):
+        # HTTP status code is 2XX, so photo was returned successfully
+        photo = photo_response.raw_data
+        metadata_response = client.get(endpoint[:-7]) # remove /$value to get metadata
+        content_type = metadata_response.data.get('@odata.mediaContentType', '')
+    else:
+        photo = ''
+        content_type = ''
+
+    if photo and save_as:
+        extension = content_type.split('/')[1]
+        filename = save_as + '.' + extension
+        with open(filename, 'wb') as fhandle:
+            fhandle.write(photo)
+    else:
+        filename = ''
+
+    return (photo, content_type, filename)
+
+def sendmail(*, client, subject=None, recipients=None, body='',
+             content_type='HTML', attachments=None):
     """Helper to send email from current user.
 
-    client      = user-authenticated flask-oauthlib client instance
-    subject     = email subject (required)
-    recipients  = list of recipient email addresses (required)
-    html        = html body of the message (required)
-    attachments = list of file attachments (local filenames)
+    client       = user-authenticated flask-oauthlib client instance
+    subject      = email subject (required)
+    recipients   = list of recipient email addresses (required)
+    body         = body of the message
+    content_type = content type (default is 'HTML')
+    attachments  = list of file attachments (local filenames)
 
     Returns the response from the POST to the sendmail API.
     """
 
     # Verify that required arguments have been passed.
-    if not all([client, subject, recipients, html]):
+    if not all([client, subject, recipients]):
         raise ValueError('sendmail(): required arguments missing')
 
     # Create recipient list in required format.
@@ -109,15 +154,17 @@ def sendmail(client, subject=None, recipients=None, html=None, attachments=None)
     if attachments:
         for filename in attachments:
             b64_content = base64.b64encode(open(filename, 'rb').read())
+            mime_type = mimetypes.guess_type(filename)[0]
+            mime_type = mime_type if mime_type else ''
             attached_files.append( \
                 {'@odata.type': '#microsoft.graph.fileAttachment',
                  'ContentBytes': b64_content.decode('utf-8'),
-                 'ContentType': 'image/png',
+                 'ContentType': mime_type,
                  'Name': filename})
 
     # Create email message in required format.
     email_msg = {'Message': {'Subject': subject,
-                             'Body': {'ContentType': 'HTML', 'Content': html},
+                             'Body': {'ContentType': content_type, 'Content': body},
                              'ToRecipients': recipient_list,
                              'Attachments': attached_files},
                  'SaveToSentItems': 'true'}
