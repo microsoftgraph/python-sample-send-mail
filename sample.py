@@ -3,6 +3,7 @@
 # See LICENSE in the project root for license information.
 import base64
 import mimetypes
+import os
 import pprint
 import uuid
 
@@ -49,29 +50,48 @@ def authorized():
 @APP.route('/mailform')
 def mailform():
     """Sample form for sending email via Microsoft Graph."""
+
+    # read user profile data
     user_profile = MSGRAPH.get('me', headers=request_headers()).data
     user_name = user_profile['displayName']
-    body = flask.render_template('email.html', name=user_name)
+
+    # get profile photo
+    photo_data, _, profile_pic = profile_photo(client=MSGRAPH, save_as='me')
+    # save photo data as config.photo for use in mailform.html/mailsent.html
+    if profile_pic:
+        config.photo = base64.b64encode(photo_data).decode()
+    else:
+        profile_pic = 'static/images/no-profile-photo.png'
+        with open(profile_pic, 'rb') as fhandle:
+            config.photo = base64.b64encode(fhandle.read()).decode()
+
+    # upload profile photo to OneDrive
+    upload_response = upload_file(client=MSGRAPH, filename=profile_pic)
+    if str(upload_response.status).startswith('2'):
+        # create a sharing link for the uploaded photo
+        link_url = sharing_link(client=MSGRAPH, item_id=upload_response.data['id'])
+    else:
+        link_url = ''
+
+    body = flask.render_template('email.html', name=user_name, link_url=link_url)
     return flask.render_template('mailform.html',
                                  name=user_name,
                                  email=user_profile['userPrincipalName'],
+                                 profile_pic=profile_pic,
+                                 photo_data=config.photo,
+                                 link_url=link_url,
                                  body=body)
 
 @APP.route('/send_mail')
 def send_mail():
     """Handler for send_mail route."""
+    profile_pic = flask.request.args['profile_pic']
 
-    # get profile photo
-    _, _, profile_pic = profile_photo(client=MSGRAPH, save_as='me')
-    if not profile_pic:
-        profile_pic = 'static/images/no-profile-photo.png'
-
-    # send the email
     response = sendmail(client=MSGRAPH,
                         subject=flask.request.args['subject'],
                         recipients=flask.request.args['email'].split(';'),
                         body=flask.request.args['body'],
-                        attachments=[profile_pic])
+                        attachments=[flask.request.args['profile_pic']])
 
     # show results in the mailsent form
     response_json = pprint.pformat(response.data)
@@ -79,8 +99,10 @@ def send_mail():
     return flask.render_template('mailsent.html',
                                  sender=flask.request.args['sender'],
                                  email=flask.request.args['email'],
+                                 profile_pic=profile_pic,
+                                 photo_data=config.photo,
                                  subject=flask.request.args['subject'],
-                                 body=flask.request.args['body'],
+                                 body_length=len(flask.request.args['body']),
                                  response_status=response.status,
                                  response_json=response_json)
 
@@ -89,12 +111,16 @@ def get_token():
     """Called by flask_oauthlib.client to retrieve current access token."""
     return (flask.session.get('access_token'), '')
 
-def request_headers():
-    """Return dictionary of default HTTP headers for Graph API calls."""
-    return {'SdkVersion': 'sample-python-flask',
-            'x-client-SKU': 'sample-python-flask',
-            'client-request-id': str(uuid.uuid4()),
-            'return-client-request-id': 'true'}
+def request_headers(headers=None):
+    """Return dictionary of default HTTP headers for Graph API calls.
+    Optional argument is other headers to merge/override defaults."""
+    default_headers = {'SdkVersion': 'sample-python-flask',
+                       'x-client-SKU': 'sample-python-flask',
+                       'client-request-id': str(uuid.uuid4()),
+                       'return-client-request-id': 'true'}
+    if headers:
+        default_headers.update(headers)
+    return default_headers
 
 def profile_photo(*, client=None, user_id='me', save_as=None):
     """Get profile photo.
@@ -174,6 +200,59 @@ def sendmail(*, client, subject=None, recipients=None, body='',
                        headers=request_headers(),
                        data=email_msg,
                        format='json')
+
+def sharing_link(*, client, item_id, link_type='view'):
+    """Get a sharing link for an item in OneDrive.
+
+    client    = user-authenticated flask-oauthlib client instance
+    item_id   = the id of the DriveItem (the target of the link)
+    link_type = 'view' (default), 'edit', or 'embed' (OneDrive Personal only)
+
+    Returns the sharing link.
+    """
+    endpoint = f'me/drive/items/{item_id}/createLink'
+    response = client.post(endpoint,
+                           headers=request_headers(),
+                           data={'type': link_type},
+                           format='json')
+
+    if str(response.status).startswith('2'):
+        # status 201 = link created, status 200 = existing link returned
+        return response.data['link']['webUrl']
+
+def upload_file(*, client, filename, folder=None):
+    """Upload a file to OneDrive for Business.
+
+    client  = user-authenticated flask-oauthlib client instance
+    filename = local filename; may include a path
+    folder = destination subfolder/path in OneDrive for Business
+             None (default) = root folder
+
+    File is uploaded and the response object is returned.
+    If file already exists, it is overwritten.
+    If folder does not exist, it is created.
+
+    API documentation:
+    https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/driveitem_put_content
+    """
+    fname_only = os.path.basename(filename)
+
+    # create the Graph endpoint to be used
+    if folder:
+        # create endpoint for upload to a subfolder
+        endpoint = f'me/drive/root:/{folder}/{fname_only}:/content'
+    else:
+        # create endpoint for upload to drive root folder
+        endpoint = f'me/drive/root/children/{fname_only}/content'
+
+    content_type, _ = mimetypes.guess_type(fname_only)
+    with open(filename, 'rb') as fhandle:
+        file_content = fhandle.read()
+
+    return client.put(endpoint,
+                      headers=request_headers({'content-type': content_type}),
+                      data=file_content,
+                      content_type=content_type)
 
 if __name__ == '__main__':
     APP.run()
