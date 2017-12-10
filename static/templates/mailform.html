@@ -7,7 +7,7 @@ See LICENSE in the source repository root for complete license information. -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{{ sample }} sample</title>
         <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" />
-        <link rel="stylesheet" type="text/css" href="/static/css/site.css?version=1.19" />
+        <link rel="stylesheet" type="text/css" href="/static/css/site.css?version=1.28" />
     </head>
     <body>
         <div class="container homepage-container">
@@ -17,7 +17,12 @@ See LICENSE in the source repository root for complete license information. -->
                     <table class="mailform-table">
                         <tr>
                             <th>From:</th>
-                            <td><input name="sender" class="form-inputs" value="{{ name }} <{{ email }}>" readonly></td>
+                            <td><input name="sender" class="form-inputs-readonly" value="{{ name }} <{{ email }}>" readonly></td>
+                            <td rowspan="3" width="150"><img class="profile-photo" src="data:image/png;base64,{{ photo_data }}"></td>
+                        </tr>
+                        <tr>
+                            <th>Attachment:</th>
+                            <td><input name="profile_pic" class="form-inputs-readonly" value="{{ profile_pic }}" readonly></td>
                         </tr>
                         <tr>
                             <th>To:</th>
@@ -25,15 +30,15 @@ See LICENSE in the source repository root for complete license information. -->
                         </tr>
                         <tr>
                             <th>Subject:</th>
-                            <td><input name="subject" class="form-inputs" value="email from Microsoft Graph"></td>
+                            <td colspan="2"><input name="subject" class="form-inputs" value="email from Microsoft Graph"></td>
                         </tr>
                         <tr>
                             <th>Body:</th>
-                            <td><textarea class="form-inputs" name="body" cols="80" rows="5">{{ body }}</textarea></td>
+                            <td colspan="2"><textarea class="form-inputs-body" name="body" cols="128" rows="25">{{ body }}</textarea></td>
                         </tr>
                         <tr>
                             <td></td>
-                            <td><input type="submit" value="Send Message" class="btn btn-primary btn-md"></td>
+                            <td colspan="2"><input type="submit" value="Send Message" class="btn btn-primary btn-md"></td>
                         </tr>
                     </table>
                 </form>

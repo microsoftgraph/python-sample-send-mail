@@ -11,41 +11,44 @@ See LICENSE in the source repository root for complete license information. -->
     </head>
     <body>
         <div class="container homepage-container">
-            <div>
-                <h1>Mail Sent</h1>
-                <form action="/send_mail">
-                    <table class="mailform-table">
-                        <tr>
-                            <th>From:</th>
-                            <td><input name="sender" class="form-inputs" value="{{ sender }}" readonly></td>
-                        </tr>
-                        <tr>
-                            <th>To:</th>
-                            <td><input name="email" class="form-inputs" value="{{ email }}" readonly></td>
-                        </tr>
-                        <tr>
-                            <th>Subject:</th>
-                            <td><input name="subject" class="form-inputs" value="{{ subject }}" readonly></td>
-                        </tr>
-                        <tr>
-                            <th>Body:</th>
-                            <td><textarea class="form-inputs" name="body" cols="80" rows="5" readonly>{{ body }}</textarea></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <button type="button" class="btn btn-primary btn-md" onclick="window.location.href='/mailform'">Send Another</button>&nbsp;<button type="button" class="btn btn-primary btn-md" onclick="window.location.href='/'">Re-Authenticate</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td>
-                                <pre style="background-color:{% if 200 <= response_status <= 299 %}#d0ffd0{% else %}#ffd0d0{% endif %}">&lt;Response [{{ response_status }}]&gt;</pre>{% if response_json %}<pre style="background-color:#ffd0d0">{{ response_json }}</pre>{% endif %}
-                            </td>
-                        </tr>
-                    </table>
-                </form>
-            </div>
+            <h1>Mail Sent</h1>
+            <form action="/send_mail">
+                <table class="mailform-table">
+                    <tr>
+                        <th>From:</th>
+                        <td><input name="sender" class="form-inputs-readonly" value="{{ sender }}" readonly></td>
+                        <td rowspan="3" width="150"><img class="profile-photo" src="data:image/png;base64,{{ photo_data }}"></td>
+                    </tr>
+                    <tr>
+                        <th>Attachment:</th>
+                        <td><input name="profile_pic" class="form-inputs-readonly" value="{{ profile_pic }}" readonly></td>
+                    </tr>
+                    <tr>
+                        <th>To:</th>
+                        <td><input name="email" class="form-inputs-readonly" value="{{ email }}" readonly></td>
+                    </tr>
+                    <tr>
+                        <th>Subject:</th>
+                        <td colspan="2"><input name="subject" class="form-inputs-readonly" value="{{ subject }}" readonly></td>
+                    </tr>
+                    <tr>
+                        <th>Body:</th>
+                        <td colspan="2"><input name="body" class="form-inputs-readonly" value="<{{ body_length }} bytes sent>" readonly></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td colspan="2">
+                            <button type="button" class="btn btn-primary btn-md" onclick="window.location.href='/mailform'">Send Another</button>&nbsp;<button type="button" class="btn btn-primary btn-md" onclick="window.location.href='/'">Re-Authenticate</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td colspan="2">
+                            <pre style="background-color:{% if 200 <= response_status <= 299 %}#d0ffd0{% else %}#ffd0d0{% endif %}">&lt;Response [{{ response_status }}]&gt;</pre>{% if response_json %}<pre style="background-color:#ffd0d0">{{ response_json }}</pre>{% endif %}
+                        </td>
+                    </tr>
+                </table>
+            </form>
         </div>
     </body>
 </html>

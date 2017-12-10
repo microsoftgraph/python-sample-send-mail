@@ -26,3 +26,46 @@
     padding: 4px;
     border: .5px solid #cccccc;
 }
+
+.form-inputs-readonly {
+    width: 100%;
+    padding: 4px;
+    background-color: #d8d8d8;
+    border: .5px solid #cccccc;
+}
+
+.form-inputs-body {
+    width: 100%;
+    padding: 4px;
+    border: .5px solid #cccccc;
+    font-size: 11px;
+}
+
+.graph-apis {
+    margin-bottom: 20px;
+}
+
+.graph-apis th {
+    background: #5cb85c;
+    color: #ffffff;
+    padding: 8px;
+    font-size: 12px;
+}
+
+.graph-apis td {
+    background: #eeeeee;
+    padding: 8px;
+    border-bottom: 1px solid #aaaaaa;
+    font-size: 14px;
+}
+
+.endpoint {
+    font-family: Consolas,Monaco,Lucida Console,Courier New, monospace;
+}
+
+.profile-photo {
+    width: 110px;
+    height: 110px;
+    float: right;
+  }
+  
