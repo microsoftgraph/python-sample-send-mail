@@ -8,13 +8,18 @@ CLIENT_ID = 'ENTER_YOUR_CLIENT_ID'
 CLIENT_SECRET = 'ENTER_YOUR_SECRET'
 REDIRECT_URI = 'http://localhost:5000/login/authorized'
 
+# AUTHORITY_URL ending determines type of account that can be authenticated:
+# /organizations = organizational accounts only
+# /consumers = MSAs only (Microsoft Accounts - Live.com, Hotmail.com, etc.)
+# /common = allow both types of accounts
 AUTHORITY_URL = 'https://login.microsoftonline.com/common'
+
 AUTH_ENDPOINT = '/oauth2/v2.0/authorize'
 TOKEN_ENDPOINT = '/oauth2/v2.0/token'
 
 RESOURCE = 'https://graph.microsoft.com/'
-API_VERSION = 'beta' # need beta API to get profile photo for Microsoft Accounts
-SCOPES = ['User.Read', 'Mail.Send', 'Files.ReadWrite']
+API_VERSION = 'v1.0'
+SCOPES = ['User.Read', 'Mail.Send', 'Files.ReadWrite'] # Add other scopes/permissions as needed.
 
 # This code can be removed after configuring CLIENT_ID and CLIENT_SECRET above.
 if 'ENTER_YOUR' in CLIENT_ID or 'ENTER_YOUR' in CLIENT_SECRET:
