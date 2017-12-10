@@ -2,9 +2,15 @@
 
 ![language:Python](https://img.shields.io/badge/Language-Python-blue.svg?style=flat-square) ![license:MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square) 
 
-Microsoft Graph provides [REST APIs for working with Outlook mail data](https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/resources/mail_api_overview) that give your app the ability to perform user-centric actions such as sending and receiving email. This sample provides an example of how to send email from a Python web application, using the [Requests](http://docs.python-requests.org/en/master/) HTTP library to POST to Graph's [Send mail](https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/user_sendmail) API.
+Microsoft Graph provides [REST APIs for working with Outlook mail data](https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/resources/mail_api_overview) that give your app the ability to perform user-centric actions such as sending and receiving email. This sample provides an example of how to send email from a Python web application, using the [Requests](http://docs.python-requests.org/en/master/) HTTP library to work with these Microsoft Graph APIs:
 
-The goal of this sample is to demonstrate the basic concepts for sending email from a Python/Flask web application via Graph. For clarity and simplicity, the sample doesn't implement the level of error handling typically found in production code.
+| API                 | Endpoint                                   |      |
+| ------------------- | ------------------------------------------ | ---- |
+| Get user profile    | /me                                        | [docs](https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/user_get) |
+| Get profile photo   | /me/photo                                  | [docs](https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/profilephoto_get) |
+| Upload to OneDrive  | /me/drive/root/children/{filename}/content | [docs](https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/driveitem_put_content) |
+| Create sharing link | /me/drive/items/{itemId}/createLink        | [docs](https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/driveitem_createlink) |
+| Send mail           | /me/microsoft.graph.sendMail               | [docs](https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/api/user_sendmail) |
 
 For additional information about this sample, see [Get started with Microsoft Graph in a Python app](https://developer.microsoft.com/en-us/graph/docs/concepts/python
 ).
