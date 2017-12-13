@@ -145,6 +145,8 @@ def profile_photo(*, client=None, user_id='me', save_as=None):
 
     if photo and save_as:
         extension = content_type.split('/')[1]
+        if extension == 'pjpeg':
+            extension = 'jpeg' # to correct known issue with content type
         filename = save_as + '.' + extension
         with open(filename, 'wb') as fhandle:
             fhandle.write(photo)
