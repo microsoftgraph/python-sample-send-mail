@@ -23,7 +23,7 @@ For additional information about this sample, see [Get started with Microsoft Gr
 
 ## Installation
 
-To install and configure the samples, see the instructions in [Installing the Python REST samples](https://github.com/microsoftgraph/python-sample-auth/blob/master/installation.md). Note that the samples in this repo require **User.Read** and **Mail.Send** permissions.
+To install and configure the samples, see the instructions in [Installing the Python REST samples](https://github.com/microsoftgraph/python-sample-auth/blob/master/installation.md). Note that this sample requires the following permissions: **User.Read**, **Mail.Send**, and **Files.ReadWrite**.
 
 After you've completed those steps, you'll be able to run the ```sample.py``` sample as covered below.
 
