@@ -15,6 +15,8 @@ Microsoft Graph provides [REST APIs for working with Outlook mail data](https://
 For additional information about this sample, see [Get started with Microsoft Graph in a Python app](https://developer.microsoft.com/en-us/graph/docs/concepts/python
 ).
 
+This sample is a web app, but if you're looking for an example of how to work with Microsoft Graph from Python _console apps_ (also known as terminal applications or command line tools), see [Python console application for Microsoft Graph](https://github.com/microsoftgraph/python-sample-console-app).
+
 * [Installation](#installation)
 * [Running the sample](#running-the-sample)
 * [Sendmail helper function](#sendmail-helper-function)
@@ -147,6 +149,7 @@ Samples:
 * [Sending mail via Microsoft Graph from Python](https://github.com/microsoftgraph/python-sample-send-mail)
 * [Working with paginated Microsoft Graph responses in Python](https://github.com/microsoftgraph/python-sample-pagination)
 * [Working with Graph open extensions in Python](https://github.com/microsoftgraph/python-sample-open-extensions)
+* [Python console application for Microsoft Graph](https://github.com/microsoftgraph/python-sample-console-app)
 
 Packages:
 * [Flask-OAuthlib](https://flask-oauthlib.readthedocs.io/en/latest/)
