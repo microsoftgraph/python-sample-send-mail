@@ -1,6 +1,10 @@
-# Sending mail via Microsoft Graph from Python
+# [ARCHIVED] Sending mail via Microsoft Graph from Python
 
-![language:Python](https://img.shields.io/badge/Language-Python-blue.svg?style=flat-square) ![license:MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square) 
+## IMPORTANT
+
+**This project is being archived and replaced with the [Build Python Django apps with Microsoft Graph](https://github.com/microsoftgraph/msgraph-training-pythondjangoapp). As part of the archival process, we're closing all open issues and pull requests.**
+
+**You can continue to use this sample "as-is", but it won't be maintained moving forward. We apologize for any inconvenience.**
 
 Microsoft Graph provides [REST APIs for working with Outlook mail data](https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/resources/mail_api_overview) that give your app the ability to perform user-centric actions such as sending and receiving email. This sample provides an example of how to send email from a Python web application, using the [Requests](http://docs.python-requests.org/en/master/) HTTP library to work with these Microsoft Graph APIs:
 
